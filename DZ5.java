@@ -1,45 +1,27 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+public class Seminar {
+  public static void main(String[] args) {
+    HashMap<String, String> book = new HashMap<>();
+    put(book, "Ivan", "+78737892387");
+    put(book, "Roma", "+85939878922");
+    put(book, "Ivan", "+93458992255");
+    put(book, "Lida", "+78745377321");
+    print(book);
 
-public class Main {
+  }
 
-    public static void add_strokaTS(String name, String tel, HashMap spr){
-        ArrayList<String> telNumbers = new ArrayList<String>();
-        if(spr.containsKey(name)) {
-            telNumbers = (ArrayList<String>) spr.get(name);
-            telNumbers.add(tel);
-        }
-        else{
-            telNumbers.add(tel);
-            spr.put(name,telNumbers);
-        }
+  public static void put(HashMap<String, String> book, String contact, String phone) {
+    book.merge(contact, phone, (ph1, ph2) -> ph1 + ", " + ph2);
+  }
+
+  public static void print(HashMap<String, String> book) {
+    ArrayList<Map.Entry<String, String>> list = new ArrayList<>(book.entrySet());
+    list.sort((o1, o2) -> o2.getValue().length() - o1.getValue().length());
+    for (Map.Entry<String, String> entry : list) {
+      System.out.println(entry.getKey() + ": " + entry.getValue());
     }
-    public static void main(String[] args) {
-
-        HashMap<String, ArrayList> telSpr = new HashMap<>();
-
-        add_strokaTS("Кротов Павел Сергеевич","79311789655",telSpr);
-        add_strokaTS("Сидорова Елена Евгеньевна","79103456865",telSpr);
-        add_strokaTS("Иванов Сергей Петрович","79207685988",telSpr);
-        add_strokaTS("Иванов Сергей Петрович","79207685987",telSpr);
-        add_strokaTS("Иванов Сергей Петрович","79207685986",telSpr);
-        add_strokaTS("Сидорова Елена Евгеньевна","79103456864",telSpr);
-
-        List list = new ArrayList(telSpr.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String,ArrayList<String>>>(){
-            @Override
-            public int compare(Map.Entry<String,ArrayList<String>> o1, Map.Entry<String,ArrayList<String>> o2) {
-               return o2.getValue().size()- o1.getValue().size();
-            }
-        });
-
-        for (int i = 0; i < list.size() ; i++) {
-            String v = list.get(i).toString().split("=")[0];
-            System.out.println(v+" : "+telSpr.get(v));
-        }
-
-
-    }
-
+  }
 }
